@@ -1,11 +1,12 @@
 {
   "name": "dracocss",
-  "private": true,
   "description": "A CSS framework for building modern web applications.",
   "version": "0.0.0",
   "type": "module",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "tsc && bash -c 'for file in dist/*.js",
+    "build": "tsc",
+    "build:watch": "tsc -w"
   },
   "repository": {
     "url": "https://github.com/DracoCSS/dracocss",
@@ -29,5 +30,8 @@
   "dependencies": {
     "chalk": "^5.3.0",
     "linkedom": "^0.18.5"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }

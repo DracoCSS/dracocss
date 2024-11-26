@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES2020",
     "useDefineForClassFields": true,
-    "module": "CommonJS",                // Générer des fichiers js de type CommonJS
+    "module": "ESNext",                // Générer des fichiers js de type CommonJS
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "skipLibCheck": true,
     "rootDir": "./src",                  // Répertoire source
@@ -10,6 +10,8 @@
     /* Bundler mode */
     "moduleResolution": "Node",
     "allowImportingTsExtensions": false,
+    "esModuleInterop": true,           // Ajoute ceci
+    "allowSyntheticDefaultImports": true,
     "noEmit": false,
     "isolatedModules": true,
     "moduleDetection": "force",

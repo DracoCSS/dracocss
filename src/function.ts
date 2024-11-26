@@ -1,44 +1,48 @@
-import { classic, value as properties, text } from "./properties";
-import { value as types } from "./value";
+import {Base} from "./lib/base";
+import {Classes} from "./utils/classes";
 
 export function generateClasses() {
-    const classes : {className: string, cssRule: string}[] = []
+    const customClasses: { className: string; cssRule: string }[] = [];
 
-    Object.keys(types).forEach((typeKey) => {
-        const typeProperties = types[typeKey];
+    Object.keys(Classes).forEach((classKey) => {
+        const set = Classes[classKey]["set"];
+        const value = Classes[classKey]["value"];
 
-        const valueSetKey = typeProperties["valueSet"];
-        let valueSet;
-
-        switch (valueSetKey) {
-            case "properties":
-                valueSet = properties;
-                break;
-            case "classic":
-                valueSet = classic;
-                break;
-            case "text":
-                valueSet = text;
-                break;
-            default:
-                valueSet = {};
-        }
-
-        Object.keys(typeProperties).forEach((propertyKey) => {
-            if (propertyKey === "valueSet") return;
-
-            const cssProperty = typeProperties[propertyKey];
-
-            Object.keys(valueSet).forEach((valueKey) => {
-                const cssValue = valueSet[valueKey];
-
-                const className = `${propertyKey}-${valueKey}`;
-                const cssRule = `${cssProperty}: ${cssValue};`;
-
-                classes.push({ className, cssRule });
+        if (value === "all") {
+            Object.keys(Base[set]).forEach((colorKey) => {
+                const colorValues = Base[set][colorKey];
+                if (typeof colorValues === "object") {
+                    Object.keys(colorValues).forEach((shade) => {
+                        const cssRule = Classes[classKey][classKey];
+                        const className = `${classKey}-${colorKey}-${shade}`;
+                        customClasses.push({
+                            className,
+                            cssRule: `${cssRule}: ${colorValues[shade]};`
+                        });
+                    });
+                } else {
+                    const cssRule = Classes[classKey][classKey];
+                    const className = `${classKey}-${colorKey}`;
+                    customClasses.push({
+                        className,
+                        cssRule: `${cssRule}: ${colorValues};`
+                    });
+                }
             });
-        });
+        } else {
+            Object.entries(Classes[classKey]).forEach(([shortKey, cssProp]) => {
+                if (shortKey === "set" || shortKey === "value") return;
+                Object.keys(Base[set][value]).forEach((key) => {
+                    const cssRule = cssProp;
+                    const className = `${shortKey}-${key}`;
+                    customClasses.push({
+                        className,
+                        cssRule: `${cssRule}: ${Base[set][value][key]};`
+                    });
+                });
+            });
+        }
     });
 
-    return classes;
+    return customClasses;
 }
